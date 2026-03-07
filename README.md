@@ -10,6 +10,7 @@ Current status:
 - The API endpoints are wired up.
 - The extractor uses simple BeautifulSoup-based parsing heuristics.
 - No live scraping is implemented.
+- A local fixture file is included for repeatable parser tests.
 
 ## Requirements
 
@@ -79,6 +80,15 @@ Confidence is intentionally simple:
 - It only parses HTML that is pasted into the API or loaded from a local fixture file.
 - It is intentionally small and explicit so the parsing behavior is easy to inspect and improve.
 
+## Fixture File
+
+The local fixture file lives at `fixtures/amazon_cart_sample.html`.
+
+It exists so you can:
+- run tests against a stable sample input
+- exercise multiple cart items in one request
+- improve the parser without needing live Amazon pages
+
 ## Test The Health Endpoint
 
 ```bash
@@ -96,7 +106,7 @@ curl -X POST http://127.0.0.1:8000/extract-brands \
   }'
 ```
 
-Expected response for the current stub:
+Example response shape:
 
 ```json
 {
@@ -117,4 +127,10 @@ Expected response for the current stub:
 
 ```bash
 pytest
+```
+
+The main API test file is:
+
+```text
+tests/test_extract_brands.py
 ```

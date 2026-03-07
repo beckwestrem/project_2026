@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 
 class ExtractBrandsRequest(BaseModel):
-    html: str = Field(..., min_length=1, description="Raw HTML pasted into the API.")
+    html: str = Field(..., description="Raw HTML pasted into the API.")
     source: Literal["amazon_cart"] = Field(
         ...,
         description="Identifies the HTML format the parser should expect.",
