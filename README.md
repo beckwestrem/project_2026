@@ -11,6 +11,7 @@ Current status:
 - The extractor uses simple BeautifulSoup-based parsing heuristics.
 - No live scraping is implemented.
 - A local fixture file is included for repeatable parser tests.
+- An optional file-upload endpoint accepts local `.html` files and reuses the same parser.
 
 ## Requirements
 
@@ -122,6 +123,35 @@ Example response shape:
   ]
 }
 ```
+
+## Test The File Upload Endpoint
+
+You can test the file-upload endpoint in Swagger UI:
+
+1. Start the API with `uvicorn main:app --reload`
+2. Open `http://127.0.0.1:8000/docs`
+3. Expand `POST /extract-brands-file`
+4. Click `Try it out`
+5. Choose `fixtures/amazon_cart_sample.html`
+6. Click `Execute`
+
+You can also test it with `curl`:
+
+```bash
+curl -X POST http://127.0.0.1:8000/extract-brands-file \
+  -F "file=@fixtures/amazon_cart_sample.html"
+```
+
+The file-upload endpoint:
+- accepts one local `.html` or `.htm` file
+- reads the file contents as text
+- passes the HTML into the same extraction logic used by `/extract-brands`
+- returns the same response schema
+
+Validation behavior:
+- missing file -> `400` with `An HTML file is required.`
+- wrong extension -> `400` with `Only .html or .htm files are supported.`
+- unreadable contents -> `400` with `The uploaded file must be UTF-8 text.`
 
 ## Run Tests
 

@@ -4,3 +4,4 @@ uvicorn
 pydantic
 beautifulsoup4
 pytest
+python-multipart

@@ -49,6 +49,20 @@ def test_extract_brands_includes_at_least_one_high_confidence_item() -> None:
     assert any(item["confidence"] >= 0.95 for item in items)
 
 
+def test_extract_brands_file_uses_same_fixture() -> None:
+    response = client.post(
+        "/extract-brands-file",
+        files={"file": ("amazon_cart_sample.html", FIXTURE_PATH.read_bytes(), "text/html")},
+    )
+
+    body = response.json()
+
+    assert response.status_code == 200
+    assert body["source"] == "amazon_cart"
+    assert body["item_count"] == 5
+    assert len(body["items"]) == 5
+
+
 def test_malformed_html_does_not_crash_the_api() -> None:
     malformed_html = """
     <div data-cart-item="true">
@@ -80,3 +94,20 @@ def test_empty_html_returns_empty_items_list() -> None:
         "item_count": 0,
         "items": [],
     }
+
+
+def test_extract_brands_file_rejects_non_html_extensions() -> None:
+    response = client.post(
+        "/extract-brands-file",
+        files={"file": ("cart.txt", b"<html></html>", "text/plain")},
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Only .html or .htm files are supported."}
+
+
+def test_extract_brands_file_requires_a_file() -> None:
+    response = client.post("/extract-brands-file")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "An HTML file is required."}
