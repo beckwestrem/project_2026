@@ -103,7 +103,7 @@ def test_extract_brands_file_rejects_non_html_extensions() -> None:
     )
 
     assert response.status_code == 400
-    assert response.json() == {"detail": "Only .html or .htm files are supported."}
+    assert response.json() == {"detail": "Only .html or .htm files are supported for upload."}
 
 
 def test_extract_brands_file_requires_a_file() -> None:

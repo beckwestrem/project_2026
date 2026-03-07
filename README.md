@@ -20,13 +20,14 @@ Current status:
 
 ## Install Dependencies
 
-If your virtual environment is not active yet:
+Open a terminal in the project folder, then activate the virtual environment:
 
 ```bash
+cd /Users/beckwestrem/Desktop/project_2026
 source venv/bin/activate
 ```
 
-Install dependencies:
+Install or refresh dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -150,13 +151,13 @@ The file-upload endpoint:
 
 Validation behavior:
 - missing file -> `400` with `An HTML file is required.`
-- wrong extension -> `400` with `Only .html or .htm files are supported.`
-- unreadable contents -> `400` with `The uploaded file must be UTF-8 text.`
+- wrong extension -> `400` with `Only .html or .htm files are supported for upload.`
+- unreadable contents -> `400` with `The uploaded file must be a UTF-8 encoded .html or .htm file.`
 
 ## Run Tests
 
 ```bash
-pytest
+python -m pytest
 ```
 
 The main API test file is:

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
 from brand_extractor import extract_brands_from_html
@@ -31,21 +33,27 @@ async def extract_brands_file(file: UploadFile | None = File(default=None)) -> E
     if not filename:
         raise HTTPException(status_code=400, detail="The uploaded file must have a name.")
 
-    lower_name = filename.lower()
-    if not any(lower_name.endswith(extension) for extension in ALLOWED_HTML_EXTENSIONS):
-        raise HTTPException(status_code=400, detail="Only .html or .htm files are supported.")
+    extension = Path(filename).suffix.lower()
+    if extension not in ALLOWED_HTML_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail="Only .html or .htm files are supported for upload.",
+        )
 
     try:
         contents = await file.read()
     except Exception as exc:
-        raise HTTPException(status_code=400, detail="The uploaded file could not be read.") from exc
+        raise HTTPException(
+            status_code=400,
+            detail="The uploaded file could not be read as text.",
+        ) from exc
 
     try:
         html = contents.decode("utf-8")
     except UnicodeDecodeError as exc:
         raise HTTPException(
             status_code=400,
-            detail="The uploaded file must be UTF-8 text.",
+            detail="The uploaded file must be a UTF-8 encoded .html or .htm file.",
         ) from exc
 
     return extract_brands_from_html(html=html, source="amazon_cart")
