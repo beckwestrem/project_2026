@@ -1,3 +1,4 @@
+# Dependencies for the backend-only FastAPI proof of concept.
 fastapi
 uvicorn
 pydantic
