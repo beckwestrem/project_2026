@@ -1,10 +1,13 @@
-# Purpose: Explains how to install dependencies and run the backend-only API locally.
+# EVENTUALLY
+This will eventually be a Chrome extension allowing users to substitute products in their online shopping carts. Automated substitution performed agentically for the purpose of organized boycots (lol)
 
-# Brand Extractor POC
+
+# RIGHT NOW -- Product Info Extractor POC
+README Details: Below explains how to install dependencies and run the backend-only API locally.
 
 This project is a backend-only proof of concept built with FastAPI.
 
-It accepts pasted HTML and returns structured JSON for Amazon-cart-like items.
+It accepts uploaded / pasted HTML and returns structured JSON for Amazon-cart-like items.
 
 Current status:
 - The API endpoints are wired up.
